@@ -126,6 +126,7 @@ class Separator(object):
         sources = self.separate(waveform)
         filename = splitext(basename(audio_descriptor))[0]
         generated = []
+        tasks = []
         for instrument, data in sources.items():
             path = join(destination, filename_format.format(
                 filename=filename,
@@ -143,5 +144,7 @@ class Separator(object):
                 codec,
                 bitrate))
             self._tasks.append(task)
+            tasks.append(task)
         if synchronous:
             self.join()
+        return tasks
