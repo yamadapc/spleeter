@@ -17,6 +17,7 @@ import pytest
 from spleeter import SpleeterError
 from spleeter.audio.adapter import get_default_audio_adapter
 from spleeter.separator import Separator
+from spleeter.utils.configuration import load_configuration
 
 TEST_AUDIO_DESCRIPTOR = 'audio_example.mp3'
 TEST_AUDIO_BASENAME = splitext(basename(TEST_AUDIO_DESCRIPTOR))[0]
@@ -43,6 +44,13 @@ def test_separate(configuration, instruments):
         for compared in instruments:
             if instrument != compared:
                 assert not (track == prediction[compared]).all()
+
+
+@pytest.mark.parametrize('configuration, instruments', TEST_CONFIGURATIONS)
+def test_separate_with_params_object(configuration, instruments):
+    """ Test separation from raw data. """
+    configuration_object = load_configuration(configuration)
+    test_separate(configuration_object, instruments)
 
 
 @pytest.mark.parametrize('configuration, instruments', TEST_CONFIGURATIONS)

@@ -41,7 +41,10 @@ class Separator(object):
         :param params_descriptor: Descriptor for TF params to be used.
         :param MWF: (Optional) True if MWF should be used, False otherwise.
         """
-        self._params = load_configuration(params_descriptor)
+        if isinstance(params_descriptor, str):
+            self._params = load_configuration(params_descriptor)
+        else:
+            self._params = params_descriptor
         self._sample_rate = self._params['sample_rate']
         self._MWF = MWF
         self._predictor = None
